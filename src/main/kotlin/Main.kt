@@ -1,31 +1,57 @@
-import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+package Ventana_1_Funcion
+
+import StudentsViewModel
+import androidx.compose.runtime.*
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import java.io.File
 
-@Composable
-@Preview
-fun App() {
-    var text by remember { mutableStateOf("Hello, World!") }
+fun main(
+    studentsViewModel: StudentsViewModel
+) = application{
 
-    MaterialTheme {
-        Button(onClick = {
-            text = "Hello, Desktop!"
-        }) {
-            Text(text)
-        }
+
+
+    Window(
+       visible = true ,
+        onCloseRequest = ::exitApplication
+    ){
+        Ventanas(
+            studentsViewModel,
+            psswd,
+            psswdVisible,
+            estudiante,
+            students,
+            estadoBoton,
+            estadoBotonLogin,
+            verVentanaPrincipal,
+            verVentanaSecundaria,
+            onEntrada = { estudiante = it },
+            onClick = { added.add(it) },
+            onSave = {
+                added.forEach {
+                    archivoEstudiantes.appendText("\n$it")
+                }
+                verVentanaPrincipal = true
+                verVentanaSecundaria = false
+            },
+            onDelete = {
+                archivoEstudiantes.delete()
+                archivoEstudiantes.createNewFile()
+            },
+            onEntrada1 = {user = it },
+            onEntrada2 = {psswd = it},
+            onLogin = {
+                verVentanaPrincipal = false
+                verVentanaSecundaria = true
+                user = ""
+                psswd = ""
+            },
+            {
+                val lista = archivoEstudiantes.useLines { it.toMutableList() }
+                lista.remove(it)
+            }
+        )
     }
-}
 
-fun main() = application {
-    Window(onCloseRequest = ::exitApplication) {
-        App()
-    }
 }

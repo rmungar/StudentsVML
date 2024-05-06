@@ -44,101 +44,80 @@ fun Ventanas(
             .fillMaxSize()
             .background(Color.LightGray)
     ){
-        if (verVentanaPrincipal && !verVentanaSecundaria){
-            Column(
+        Row {
+            Column (
+                modifier = Modifier
+                    .fillMaxWidth(0.5F)
+                    .fillMaxHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ){
+                OutlinedTextField(
+                    value = estudiante,
+                    placeholder ={ Text("Nombre del estudiante")},
+                    onValueChange = {
+                        onEntrada(it)
+                    },
+                    label = { Text("Estudiante")},
+                    modifier = Modifier
+                )
+                Spacer(modifier = Modifier.size(50.dp))
+                Button(
+                    onClick = {
+                        onClick(estudiante)
+                    },
+                    enabled = estadoBoton,
+                    modifier = Modifier
+                        .size(100.dp, 50.dp)
+                ){
+                    Text("AÑADIR")
+                }
+            }
+            Column (
                 modifier = Modifier
                     .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ){
-
-                Usuario(user,onEntrada1)
-
-                Spacer(modifier = Modifier.size(10.dp))
-
-                Psswd(psswd, psswdVisible, onEntrada2)
-
-                Spacer(modifier = Modifier.size(10.dp))
-
-                Boton(estadoBotonLogin, onLogin)
-            }
-
-        }
-        else{
-            Row {
-                Column (
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth(0.5F)
-                        .fillMaxHeight(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ){
-                    OutlinedTextField(
-                        value = estudiante,
-                        placeholder ={ Text("Nombre del estudiante")},
-                        onValueChange = {
-                            onEntrada(it)
-                        },
-                        label = { Text("Estudiante")},
-                        modifier = Modifier
-                    )
-                    Spacer(modifier = Modifier.size(50.dp))
-                    Button(
-                        onClick = {
-                            onClick(estudiante)
-                        },
-                        enabled = estadoBoton,
-                        modifier = Modifier
-                            .size(100.dp, 50.dp)
-                    ){
-                        Text("AÑADIR")
-                    }
-                }
-                Column (
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ){
-                    Column(
-                        modifier = Modifier
-                            .border(2.dp, Color.Black)
-                            .wrapContentWidth()
-                            .wrapContentSize()
-                    ) {
-                        for (estudiante in students){
-                            OutlinedTextField(
-                                modifier = Modifier
-                                    .wrapContentSize()
-                                    .background(Color.White),
-                                value = estudiante,
-                                enabled = false,
-                                onValueChange = {},
-                                trailingIcon = {
-                                    IconButton(
-                                        enabled = true,
-                                        onClick = {
+                        .border(2.dp, Color.Black)
+                        .wrapContentWidth()
+                        .wrapContentSize()
+                ) {
+                    for (estudiante in students){
+                        OutlinedTextField(
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .background(Color.White),
+                            value = estudiante,
+                            enabled = false,
+                            onValueChange = {},
+                            trailingIcon = {
+                                IconButton(
+                                    enabled = true,
+                                    onClick = {
 
-                                        }
-                                    ){
-                                        Icon(imageVector = Icons.Default.Delete, "Eliminar Estudiante")
                                     }
+                                ){
+                                    Icon(imageVector = Icons.Default.Delete, "Eliminar Estudiante")
                                 }
-                            )
-                        }
-                    }
-                    Spacer(modifier = Modifier.size(50.dp))
-                    Button(
-                        onClick = {
-                            onDelete()
-                        },
-                        enabled = true,
-                        modifier = Modifier
-                            .size(100.dp, 50.dp)
-                    ){
-                        Text("VACIAR")
+                            }
+                        )
                     }
                 }
+                Spacer(modifier = Modifier.size(50.dp))
+                Button(
+                    onClick = {
+                        onDelete()
+                    },
+                    enabled = true,
+                    modifier = Modifier
+                        .size(100.dp, 50.dp)
+                ){
+                    Text("VACIAR")
+                }
+            }
             }
             Row(
                 modifier = Modifier
