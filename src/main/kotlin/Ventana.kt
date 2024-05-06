@@ -1,5 +1,6 @@
 package Ventana_1_Funcion
 
+import IStudentsVM
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -7,38 +8,20 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 
 
 @Preview
 @Composable
 fun Ventanas(
-    user:String,
-    psswd: String,
-    psswdVisible: Boolean,
-    estudiante: String,
-    students: MutableList<String>,
-    estadoBoton: Boolean,
-    estadoBotonLogin: Boolean,
-    verVentanaPrincipal: Boolean,
-    verVentanaSecundaria: Boolean,
-    onEntrada: (String) -> Unit,
-    onClick: (String) -> Unit,
-    onSave: () -> Unit,
-    onDelete: () -> Unit,
-    onEntrada1: (String) -> Unit,
-    onEntrada2: (String) -> Unit,
-    onLogin: () -> Unit,
-    onBorrar: (String) -> Unit
+    StudentsViewModel: IStudentsVM
 ){
+    val listaEstudiantes = StudentsViewModel.students
+    val estudiante = StudentsViewModel.newStudent.value
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -56,22 +39,13 @@ fun Ventanas(
                     value = estudiante,
                     placeholder ={ Text("Nombre del estudiante")},
                     onValueChange = {
-                        onEntrada(it)
+                        StudentsViewModel.newStudentChange(it)
                     },
                     label = { Text("Estudiante")},
                     modifier = Modifier
                 )
                 Spacer(modifier = Modifier.size(50.dp))
-                Button(
-                    onClick = {
-                        onClick(estudiante)
-                    },
-                    enabled = estadoBoton,
-                    modifier = Modifier
-                        .size(100.dp, 50.dp)
-                ){
-                    Text("AÑADIR")
-                }
+                Boton("Añadir", { StudentsViewModel.addEstudiante() })
             }
             Column (
                 modifier = Modifier
@@ -85,7 +59,7 @@ fun Ventanas(
                         .wrapContentWidth()
                         .wrapContentSize()
                 ) {
-                    for (estudiante in students){
+                    for (estudiante in listaEstudiantes){
                         OutlinedTextField(
                             modifier = Modifier
                                 .wrapContentSize()
@@ -97,7 +71,7 @@ fun Ventanas(
                                 IconButton(
                                     enabled = true,
                                     onClick = {
-
+                                        StudentsViewModel.borrarEstudiante(0)
                                     }
                                 ){
                                     Icon(imageVector = Icons.Default.Delete, "Eliminar Estudiante")
@@ -107,16 +81,7 @@ fun Ventanas(
                     }
                 }
                 Spacer(modifier = Modifier.size(50.dp))
-                Button(
-                    onClick = {
-                        onDelete()
-                    },
-                    enabled = true,
-                    modifier = Modifier
-                        .size(100.dp, 50.dp)
-                ){
-                    Text("VACIAR")
-                }
+                Boton("VACIAR", { StudentsViewModel.vaciarEstudiantes() })
             }
             }
             Row(
@@ -127,10 +92,8 @@ fun Ventanas(
                     modifier = Modifier
                         .align(Alignment.CenterVertically),
                     onClick = {
-                        onSave()
-                    },
-
-
+                        StudentsViewModel.addEstudiante()
+                    }
                     ){
                     Text("GUARDAR CAMBIOS\n          Y SALIR")
                 }
@@ -138,51 +101,16 @@ fun Ventanas(
             }
         }
     }
-}
-@Composable
-fun Usuario(
-    user: String,
-    onEntrada : (String) -> Unit
-){
-    OutlinedTextField(
-        value = user,
-        placeholder = { Text("Nombre de usuario") },
-        onValueChange = { onEntrada(it) },
-        label = { Text("Usuario")}
-    )
-}
 
 @Composable
-fun Psswd(psswd: String, psswdVisible: Boolean, onEntrada2: (String) -> Unit){
-    OutlinedTextField(
-        value = psswd,
-        placeholder = { Text("Contraseña") },
-        visualTransformation = if (psswdVisible) VisualTransformation.None else PasswordVisualTransformation(),
-        onValueChange = {onEntrada2(it)},
-        label = { Text("Contraseña")},
-        trailingIcon = {
-            IconToggleButton(
-                checked = psswdVisible,
-                onCheckedChange = {!psswdVisible}
-            ){
-                Icon(
-                    imageVector = if (psswdVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
-                    contentDescription = null
-                )
-            }
-        }
-    )
-}
-
-@Composable
-fun Boton(estadoBoton: Boolean, onLogin: () -> Unit){
+fun Boton(texto:String, onAction:() -> Unit){
     Button(
         onClick = {
-            onLogin() },
-        enabled = estadoBoton,
+            onAction()
+        },
         modifier = Modifier
             .size(100.dp, 50.dp)
     ){
-        Text("LOGIN")
+        Text(texto)
     }
 }
