@@ -20,7 +20,7 @@ class  StudentsViewModel(
     override val newStudent: State<String> = _newStudent
 
     private val _students = mutableStateListOf<String>()
-    override val students = _students
+    override var students = _students
 
     private val _showInfoMessage = mutableStateOf(false)
     override val showInfoMessage: State<Boolean> = _showInfoMessage
