@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 fun Ventanas(
     StudentsViewModel: IStudentsVM
 ){
-    val listaEstudiantes = StudentsViewModel.students
+    val listaEstudiantes = StudentsViewModel.students.toList()
     val estudiante = StudentsViewModel.newStudent.value
     Box(
         modifier = Modifier
@@ -71,7 +71,7 @@ fun Ventanas(
                                 IconButton(
                                     enabled = true,
                                     onClick = {
-                                        StudentsViewModel.borrarEstudiante(0)
+                                        StudentsViewModel.borrarEstudiante(listaEstudiantes[estudiante])
                                     }
                                 ){
                                     Icon(imageVector = Icons.Default.Delete, "Eliminar Estudiante")

@@ -9,7 +9,7 @@ import java.io.File
 
 
 fun main() = application{
-    val archivoEstudiantes = ""
+    val archivoEstudiantes = "Students.txt"
     val gestorFichero = GestorFichero()
     val studentsViewModel :IStudentsVM = StudentsViewModel(gestorFichero, File(archivoEstudiantes))
 
